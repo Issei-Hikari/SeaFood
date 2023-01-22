@@ -29,8 +29,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         
         if let userPickedimage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = userPickedimage
+            
+            guard let ciimage = CIImage(image: userPickedimage) else {
+                fatalError("Could not convet to CIImage")
+            }
+            detect(image: ciimage)
         }
         imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func detect(image: CIImage) {
+        
+        guard let model = try? VNCoreMLModel(for: Inceptionv3(configuration: MLModelConfiguration()).model) else {
+            fatalError("loading CoreML Model Failed.")
+        }
+        
+        let request = VNCoreMLRequest(model: model) { (request, error) in
+            guard let results = request.results as? [VNClassificationObservation] else {
+                fatalError("Model failed to process image")
+            }
+            print(results)
+        }
+        
+        let handler = VNImageRequestHandler(ciImage: image)
+        
+        do {
+            try handler.perform([request])
+        }
+        catch {
+            print(error)
+        }
     }
     
     @IBAction func cameraTrapped(_ sender: UIBarButtonItem) {
