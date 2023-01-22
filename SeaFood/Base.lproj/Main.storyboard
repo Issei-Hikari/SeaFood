@@ -30,8 +30,15 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3x9-Jk-08N">
-                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="4bD-uF-l9E"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="4bD-uF-l9E">
+                            <connections>
+                                <action selector="cameraTrapped:" destination="BYZ-38-t0r" id="F76-bB-3bS"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="cmr-q4-iOR" id="aSF-2J-B7o"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
